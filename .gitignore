@@ -1,0 +1,32 @@
+.metadata
+.gradle
+app/build/
+*.class
+*.tmp
+*.bak
+*.swp
+*~.nib
+*.iml
+local.properties
+.settings/
+.loadpath
+.idea/
+
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+# sbteclipse plugin 
+.target
+
+# TeXlipse plugin
+.texlipse

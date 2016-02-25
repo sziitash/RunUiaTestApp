@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="全选"
+            android:id="@+id/bt_selectall"
+            android:layout_marginRight="1dp"
+            android:background="#025818"
+            android:textStyle="bold"
+            android:theme="@style/Widget.AppCompat.ActionButton" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="反选"
+            android:id="@+id/bt_cancleselectall"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:background="#966907"
+            android:textStyle="bold" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:id="@+id/bt_deselectall"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:textStyle="bold" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="72dp"
+            android:layout_height="wrap_content"
+            android:text="运行测试"
+            android:id="@+id/bt_runtest"
+            android:layout_marginLeft="1dp"
+            android:background="#040667"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_below="@+id/line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#f2f7f3"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/tv" />
+
+</RelativeLayout>

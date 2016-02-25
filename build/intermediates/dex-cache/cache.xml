@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="D:\CheckBoxSelect\app\libs\javacsv.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="afed46cadd463453bbf007625ecfa3afac097f37">
+        <dex dex="D:\CheckBoxSelect\app\build\intermediates\pre-dexed\debug\javacsv_f270742cc2227e669e2e61ab23fea557e2adfdac.jar" />
+    </item>
+    <item
+        jar="D:\CheckBoxSelect\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
+        <dex dex="D:\CheckBoxSelect\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-22.0.0_ec690dbee6550eed4cd3b151aa3ff062fc6e9dee.jar" />
+    </item>
+    <item
+        jar="D:\android-adt\sdk\extras\android\m2repository\com\android\support\support-annotations\22.0.0\support-annotations-22.0.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
+        <dex dex="D:\CheckBoxSelect\app\build\intermediates\pre-dexed\debug\support-annotations-22.0.0_97f3b686e0791f2a7bc18d075e687e480e65a0b9.jar" />
+    </item>
+    <item
+        jar="D:\CheckBoxSelect\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\22.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="11842de6a309c447b3a3d60d73ad637a87c58994">
+        <dex dex="D:\CheckBoxSelect\app\build\intermediates\pre-dexed\debug\com.android.support-cardview-v7-22.0.0_a1a1b3d23bb88d90803318b572738f8e08222a09.jar" />
+    </item>
+    <item
+        jar="D:\CheckBoxSelect\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="c6d79137693d494dee16372d3921f919eb724ced">
+        <dex dex="D:\CheckBoxSelect\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-22.0.0_12bbf09365b40123253787d1b80aeafc8bdd838c.jar" />
+    </item>
+    <item
+        jar="D:\CheckBoxSelect\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\jars\libs\internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="D:\CheckBoxSelect\app\build\intermediates\pre-dexed\debug\internal_impl-22.0.0_de350a55b9d0c409a5ddd536852d92a0c4164ed2.jar" />
+    </item>
+    <item
+        jar="D:\CheckBoxSelect\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="D:\CheckBoxSelect\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-22.0.0_a06e3f79e8e6911e318fdd26e82be87e854810b6.jar" />
+    </item>
+
+</items>
