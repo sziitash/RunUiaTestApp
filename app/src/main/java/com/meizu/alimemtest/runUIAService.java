@@ -1,7 +1,9 @@
 package com.meizu.alimemtest;
 
 import android.app.ActivityManager;
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -40,31 +42,21 @@ public class runUIAService extends Service {
     @Override
     public void onCreate() {
         // TODO Auto-generated method stub
-
-//        manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-//                new Intent(this, runUIAService.class), 0);
-//        Notification noti = new Notification.Builder(this)
-//                .setSmallIcon(R.drawable.icon)
-//                .setWhen(System.currentTimeMillis())
-//                .setContentTitle("点我没惊喜")
-//                .setContentText("阿里内存测试运行中")
-//                .setContentIntent(contentIntent)
-//                .build();
-//
-////        manager.notify(0, noti);
-//        startForeground(1,noti);
         Log.d("LBH", "onCreate");
-
-//        //定义一个notification
-//        Notification notification = new Notification();
-//        Intent notificationIntent = new Intent(this, runUIAService.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-//        notification.setLatestEventInfo(this, "点我无惊喜", "阿里内存测试运行中", pendingIntent);
-//        //把该service创建为前台service
-//        startForeground(1, notification);
-
         super.onCreate();
+//        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, runUIAService.class), 0);
+        Notification noti = new Notification.Builder(this)
+                .setSmallIcon(R.drawable.icon)
+                .setWhen(System.currentTimeMillis())
+                .setContentTitle("点我没惊喜")
+                .setContentText("阿里内存测试运行中")
+                .setContentIntent(contentIntent)
+                .build();
+
+//        manager.notify(0, noti);
+        startForeground(1, noti);
     }
 
     //	@SuppressWarnings("deprecation")
@@ -74,6 +66,7 @@ public class runUIAService extends Service {
         //在线程中传参，修改gorun状态
 //        manager.cancel(0);
 //        stopSelfResult(1);
+        stopForeground(true);
         super.onDestroy();
     }
 
@@ -187,10 +180,10 @@ public class runUIAService extends Service {
             for(int tccount = 0;tccount < testcaseList.size();tccount++){
                 String commandstr = "uiautomator runtest " + ischeckmodel + " -c " + cname +"#"+testcaseList.get(tccount);
                 Log.i("benlee", commandstr);
-                String errorstr = ShellUtils.execCommand(commandstr, false).errorMsg;
+                String errorstr = ShellUtils.execCommand(commandstr, true).errorMsg;
                 Log.i("benlee", errorstr);
                 if(errorstr.contains("Segmentation")){
-                    ShellUtils.execCommand(commandstr, false);
+                    ShellUtils.execCommand(commandstr, true);
                 }
             }
         } catch (ClassNotFoundException e) {
@@ -211,8 +204,8 @@ public class runUIAService extends Service {
             Debug.MemoryInfo[] pidinfo = am.getProcessMemoryInfo(pidint);
             String pjar = ischeckmodel.replace(Ex_checkboxActivity.jardir, "");
             //删除、新建csv文件
-            ShellUtils.execCommand("rm -f /sdcard/jars/" + pjar + ".csv", false);
-            ShellUtils.execCommand("touch /sdcard/jars/" + pjar + ".csv", false);
+            ShellUtils.execCommand("rm -f /sdcard/jars/" + pjar + ".csv", true);
+            ShellUtils.execCommand("touch /sdcard/jars/" + pjar + ".csv", true);
             SystemClock.sleep(1000);
             CsvWriter wr = new CsvWriter("/sdcard/jars/" + pjar + ".csv", ',', Charset.forName("GBK"));
             createResultcsv(wr, pjar);
@@ -230,7 +223,7 @@ public class runUIAService extends Service {
             }
             wr.close();
         }
-        String uiapid = ShellUtils.execCommand("/system/bin/ps|grep uiautomator|/data/busybox awk '{print $2}'", false, true).successMsg;
+//        String uiapid = ShellUtils.execCommand("/system/bin/ps|grep uiautomator|/data/busybox awk '{print $2}'", false, true).successMsg;
 //        if (uiapid.equals("")){
 //            Log.i("benlee","uiautomator is dead");
 //        }

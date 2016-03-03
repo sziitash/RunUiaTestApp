@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.meizu.alimemtest"
+        applicationId "com.benlee.FatAutoTester"
         minSdkVersion 22
         targetSdkVersion 22
     }
@@ -22,6 +22,7 @@ android {
         compile 'com.android.support:appcompat-v7:22.0.+'
         compile 'com.android.support:cardview-v7:22.0.+'
         compile 'com.android.support:recyclerview-v7:22.0.+'
+        compile 'commons-lang:commons-lang:2.6'
         compile files('libs/javacsv.jar')
     }
 

@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      android:sharedUserId="android.uid.system"
-      android:persistent="true"
-      coreApp="true"
       package="com.meizu.alimemtest"
       android:versionCode="1"
       android:versionName="1.0">
     <uses-sdk android:minSdkVersion="21" />
 
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".Ex_checkboxActivity"
+        <activity android:name=".MainActivity"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,10 +14,31 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".Ex_checkboxActivity" />
+        <activity android:name=".getfpsActivity" />
+
+        <receiver android:name=".fpsBroadcast">
+            <intent-filter>
+                <action android:name="com.meizu.alimemtest.fpsservice" />
+            </intent-filter>
+        </receiver>
+
         <service android:name="com.meizu.alimemtest.runUIAService" >
         </service>
+
+        <service android:name=".getFPSService" >
+            <intent-filter>
+                <action android:name="com.meizu.alimemtest.fpsservice" />
+            </intent-filter>
+        </service>
     </application>
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>
+
+    <!--system permission-->
+    <!--android:sharedUserId="android.uid.system"-->
+    <!--android:persistent="true"-->
+    <!--coreApp="true"-->
