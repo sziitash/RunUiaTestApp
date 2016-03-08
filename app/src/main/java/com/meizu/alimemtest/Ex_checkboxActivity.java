@@ -139,6 +139,7 @@ public class Ex_checkboxActivity extends Activity {
 			public void onClick(View v) {
 				Intent i = new Intent();
 				i.setClass(Ex_checkboxActivity.this, runUIAService.class);
+				Ex_checkboxActivity.this.stopService(i);
 				Ex_checkboxActivity.this.startService(i);
 			}
 		});

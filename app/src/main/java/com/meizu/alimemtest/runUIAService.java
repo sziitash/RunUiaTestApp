@@ -2,11 +2,12 @@ package com.meizu.alimemtest;
 
 import android.app.ActivityManager;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Debug;
 import android.os.IBinder;
@@ -30,7 +31,7 @@ import dalvik.system.DexClassLoader;
 // * Created by libinhui on 2016/1/12.
 // */
 public class runUIAService extends Service {
-    NotificationManager manager;
+    MyAsyncTask testcase = new MyAsyncTask();
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -42,38 +43,29 @@ public class runUIAService extends Service {
     @Override
     public void onCreate() {
         // TODO Auto-generated method stub
-        Log.d("LBH", "onCreate");
+//        Log.i("benlee", "onCreate");
+        if (testcase != null && testcase.getStatus() == AsyncTask.Status.RUNNING) {
+            testcase.cancel(true); // 如果Task还在运行，则先取消它
+        }
         super.onCreate();
-//        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, runUIAService.class), 0);
         Notification noti = new Notification.Builder(this)
                 .setSmallIcon(R.drawable.icon)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle("点我没惊喜")
-                .setContentText("阿里内存测试运行中")
+                .setContentText("内存性能测试运行中")
                 .setContentIntent(contentIntent)
                 .build();
 
-//        manager.notify(0, noti);
         startForeground(1, noti);
     }
 
-    //	@SuppressWarnings("deprecation")
-    @Override
-    public void onDestroy() {
-        // TODO Auto-generated method stub
-        //在线程中传参，修改gorun状态
-//        manager.cancel(0);
-//        stopSelfResult(1);
-        stopForeground(true);
-        super.onDestroy();
-    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent==null){ return START_STICKY_COMPATIBILITY; }
-        MyAsyncTask testcase = new MyAsyncTask();
+//        MyAsyncTask testcase = new MyAsyncTask();
 //        ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
 //        testcase.executeOnExecutor(mExecutorService);
         testcase.executeOnExecutor(MyAsyncTask.SERIAL_EXECUTOR);
@@ -100,24 +92,28 @@ public class runUIAService extends Service {
     private static ArrayList<Integer> hasSelecteds() {
         ArrayList<Integer> selecteds = new ArrayList<Integer>();
         //获取已勾选的jar包，放到selecteds
-        final ArrayList<String> list = Ex_checkboxActivity.getJarList();
-                for (int i = 0; i < list.size(); i++) {
-                boolean isselecting = MyAdapter.getIsSelected().get(i);
-                if (isselecting) {
+        ArrayList<String> list = Ex_checkboxActivity.getJarList();
+//        Log.i("benlee", String.valueOf(list.size()));
+        for (int i = 0; i < list.size(); i++) {
+            boolean isselecting = MyAdapter.getIsSelected().get(i);
+            if (isselecting) {
                 selecteds.add(i);
                 }
-                }
-                return selecteds;
-                }
+        }
+        return selecteds;
+    }
 
     private class MyAsyncTask extends AsyncTask<String, Integer, String> {
 
         @Override
         protected String doInBackground(String... params) {
+            if (isCancelled()){
+                return null;
+            }
             ArrayList<String> list = Ex_checkboxActivity.getJarList();
-            Log.i("benlee", list.toString());
+//            Log.i("benlee", list.toString());
             ArrayList<Integer> selecteds = hasSelecteds();
-            Log.i("benlee", selecteds.toString());
+//            Log.i("benlee", selecteds.toString());
             for (int x = 0; x < selecteds.size(); x++) {
                 String ischeckmodel = list.get(selecteds.get(x));
                 runUIAThread uia = new runUIAThread(ischeckmodel,getApplicationContext());
@@ -130,21 +126,24 @@ public class runUIAService extends Service {
 
         @Override
         protected void onPostExecute(String result) {
-            Log.i("benlee",result);
+            Log.i("benlee", result);
         }
 
 
         //该方法运行在UI线程当中,并且运行在UI线程当中 可以对UI空间进行设置
         @Override
         protected void onPreExecute() {
-            Log.i("benlee","Start");
+//            Log.i("benlee","Start");
         }
 
 
         @Override
         protected void onProgressUpdate(Integer... values) {
+            if(isCancelled()){
+                return;
+            }
             int value = values[0];
-            Log.i("benlee",String.valueOf(value));
+//            Log.i("benlee","onProgressUpdate:"+String.valueOf(value));
         }
     }
 
@@ -179,13 +178,15 @@ public class runUIAService extends Service {
             List<String> testcaseList = getTestClassesFromJars(mContext,ischeckmodel,cname);
             for(int tccount = 0;tccount < testcaseList.size();tccount++){
                 String commandstr = "uiautomator runtest " + ischeckmodel + " -c " + cname +"#"+testcaseList.get(tccount);
-                Log.i("benlee", commandstr);
+                Log.i("benlee",cname +"#"+testcaseList.get(tccount));
                 String errorstr = ShellUtils.execCommand(commandstr, true).errorMsg;
-                Log.i("benlee", errorstr);
+//                Log.i("benlee", errorstr);
                 if(errorstr.contains("Segmentation")){
                     ShellUtils.execCommand(commandstr, true);
                 }
             }
+//            String commandstr = "uiautomator runtest " + ischeckmodel + " -c " + cname +"#test002LoginAndStartSync";
+//            ShellUtils.execCommand(commandstr, true);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -233,6 +234,19 @@ public class runUIAService extends Service {
     }
     }
 
+    //	@SuppressWarnings("deprecation")
+
+
+    @Override
+    public void onDestroy() {
+//        manager.cancel(0);
+//        stopSelfResult(1);
+        Log.i("benlee","onDestroy");
+        testcase.cancel(true);
+        stopForeground(true);
+        super.onDestroy();
+    }
+
     private String getProcessId(ActivityManager am, String processStr){
         List<ActivityManager.RunningAppProcessInfo> procList = null;
         int result=-1;
@@ -253,9 +267,9 @@ public class runUIAService extends Service {
 
     public static List<String> getTestClassesFromJars(Context context, String jarPath, String testCase) throws ClassNotFoundException {
         String dexPath = jarPath + File.pathSeparator + "/system/framework/android.test.runner.jar" + File.pathSeparator + "/system/framework/uiautomator.jar";
-        Log.i("dexPath",dexPath);
+//        Log.i("dexPath",dexPath);
         String dexOutputDir = context.getApplicationInfo().dataDir;
-        Log.i("dexOutputDir",dexOutputDir);
+//        Log.i("dexOutputDir",dexOutputDir);
         DexClassLoader classLoader = new DexClassLoader(dexPath, dexOutputDir, null, context.getClass().getClassLoader());
         List<String> caseList = new ArrayList<String>();
         Class cls = classLoader.loadClass(testCase);
@@ -267,4 +281,6 @@ public class runUIAService extends Service {
         }
         return caseList;
     }
+
+
 }
