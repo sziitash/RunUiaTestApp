@@ -133,14 +133,14 @@ public class MainActivity extends Activity{
         File f = new File(this.getApplicationContext().getFilesDir() + "/");
         f.mkdirs();
 
-        Util.mkdirs(get_dropbear_home_dir());
-        Util.mkdirs(get_dropbear_bin_dir());
-        Util.mkdirs(get_dropbear_conf_dir());
+        sshdUtil.mkdirs(get_dropbear_home_dir());
+        sshdUtil.mkdirs(get_dropbear_bin_dir());
+        sshdUtil.mkdirs(get_dropbear_conf_dir());
     }
 
     private boolean is_dropbear_running()
     {
-        String txt = Util.exec_out(fn_busybox + " ps");
+        String txt = sshdUtil.exec_out(fn_busybox + " ps");
         if (txt.isEmpty()||txt==null) {
             return false;
         }
@@ -165,29 +165,29 @@ public class MainActivity extends Activity{
         String dir_conf = get_dropbear_conf_dir();
         String dir_bin = get_dropbear_bin_dir();
 
-        fn_dropbear = Util.extractAssetToDir(this, "dropbear", dir_bin, "dropbear", false);
+        fn_dropbear = sshdUtil.extractAssetToDir(this, "dropbear", dir_bin, "dropbear", false);
         Log.i("benlee-extract_asset", fn_dropbear);
-        Util.exec("chmod 777 " + fn_dropbear);
+        sshdUtil.exec("chmod 777 " + fn_dropbear);
 
-        fn_dropbearconvert = Util.extractAssetToDir(this, "dropbearconvert", dir_bin, "dropbearconvert", false);
-        Util.exec("chmod 777 " + fn_dropbearconvert);
+        fn_dropbearconvert = sshdUtil.extractAssetToDir(this, "dropbearconvert", dir_bin, "dropbearconvert", false);
+        sshdUtil.exec("chmod 777 " + fn_dropbearconvert);
 
-        fn_dropbearkey = Util.extractAssetToDir(this, "dropbearkey", dir_bin, "dropbearkey", false);
-        Util.exec("chmod 777 " + fn_dropbearkey);
+        fn_dropbearkey = sshdUtil.extractAssetToDir(this, "dropbearkey", dir_bin, "dropbearkey", false);
+        sshdUtil.exec("chmod 777 " + fn_dropbearkey);
 
-        fn_scp = Util.extractAssetToDir(this, "scp", dir_bin, "scp", false);
-        Util.exec("chmod 777 " + fn_scp);
+        fn_scp = sshdUtil.extractAssetToDir(this, "scp", dir_bin, "scp", false);
+        sshdUtil.exec("chmod 777 " + fn_scp);
 
-        fn_ssh = Util.extractAssetToDir(this, "ssh", dir_bin, "ssh", false);
-        Util.exec("chmod 777 " + fn_ssh);
+        fn_ssh = sshdUtil.extractAssetToDir(this, "ssh", dir_bin, "ssh", false);
+        sshdUtil.exec("chmod 777 " + fn_ssh);
 
-        fn_sftp_server = Util.extractAssetToDir(this, "sftp-server", dir_bin, "sftp-server", false);
-        Util.exec("chmod 777 " + fn_sftp_server);
+        fn_sftp_server = sshdUtil.extractAssetToDir(this, "sftp-server", dir_bin, "sftp-server", false);
+        sshdUtil.exec("chmod 777 " + fn_sftp_server);
 
         // curl -O http://www.busybox.net/downloads/binaries/latest/busybox-armv6l <-- OLD
         // curl -O http://www.busybox.net/downloads/binaries/latest/busybox-armv7l
-        fn_busybox = Util.extractAssetToDir(this, "busybox-armv7l", dir_bin, "busybox", false);
-        Util.exec("chmod 777 " + fn_busybox);
+        fn_busybox = sshdUtil.extractAssetToDir(this, "busybox-armv7l", dir_bin, "busybox", false);
+        sshdUtil.exec("chmod 777 " + fn_busybox);
 
 //        File id_dss = new File(dir_conf, "id_dss"); // dropbear_dss_host_key
 //        if (!id_dss.exists()) {
@@ -207,8 +207,8 @@ public class MainActivity extends Activity{
 //        Util.exec("chmod 600 " + fn_auth_keys);
 
         String dir_home = get_dropbear_home_dir();
-        String tmp = Util.extractAssetToDir(this, "profile", dir_home, ".profile", false);
-        Util.exec("chmod 600 " + tmp);
+        String tmp = sshdUtil.extractAssetToDir(this, "profile", dir_home, ".profile", false);
+        sshdUtil.exec("chmod 600 " + tmp);
     }
 
     private class SshdDeamonTask extends Thread {
@@ -223,14 +223,14 @@ public class MainActivity extends Activity{
             File id_dss = new File(dir_conf, "id_dss"); // dropbear_dss_host_key
             if (!id_dss.exists()) {
                 Log.i(TAG, "to make dss key ...");
-                Util.exec(fn_dropbearkey + " -t dss -f " + id_dss.getAbsolutePath());
+                sshdUtil.exec(fn_dropbearkey + " -t dss -f " + id_dss.getAbsolutePath());
                 Log.i("benlee",fn_dropbearkey + " -t dss -f " + id_dss.getAbsolutePath());
             }
 
             File id_rsa = new File(dir_conf, "id_rsa"); // dropbear_rsa_host_key
             if (!id_rsa.exists()) {
                 Log.i(TAG, "to make rsa key ...");
-                Util.exec(fn_dropbearkey + " -t rsa -f " + id_rsa.getAbsolutePath());
+                sshdUtil.exec(fn_dropbearkey + " -t rsa -f " + id_rsa.getAbsolutePath());
                 Log.i("benlee", fn_dropbearkey + " -t dss -f " + id_dss.getAbsolutePath());
             }
 //
@@ -272,7 +272,7 @@ public class MainActivity extends Activity{
                     ;
 
             Log.i(TAG, cli);
-            Util.exec(cli);
+            sshdUtil.exec(cli);
 //            ShellUtils.execCommand(cli,true);
         }
     }
