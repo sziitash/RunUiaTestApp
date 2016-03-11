@@ -4,9 +4,9 @@ android {
     compileSdkVersion 22
     buildToolsVersion "23.0.2"
 
-
     defaultConfig {
         applicationId "com.benlee.FatAutoTester"
+//        applicationId "me.xyhe.sshd4android"
         minSdkVersion 22
         targetSdkVersion 22
     }

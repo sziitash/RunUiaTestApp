@@ -6,8 +6,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Debug;
 import android.os.IBinder;
@@ -57,7 +55,6 @@ public class runUIAService extends Service {
                 .setContentText("内存性能测试运行中")
                 .setContentIntent(contentIntent)
                 .build();
-
         startForeground(1, noti);
     }
 
