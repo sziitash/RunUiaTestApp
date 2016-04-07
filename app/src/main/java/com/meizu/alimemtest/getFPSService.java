@@ -8,8 +8,6 @@ import android.util.Log;
 
 import com.meizu.alimemtest.Utils.utils;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.util.List;
 
 /**
@@ -36,8 +34,8 @@ public class getFPSService extends Service{
     private class runTestThread extends Thread{
         @Override
         public void run() {
-            String a = getCurrentActivity();
-            String[] x = a.split("/\\.");
+            String currentActivity = getCurrentActivity();
+            String[] x = currentActivity.split("/\\.");
             String pcname = x[0];
             String actname = x[1];
             String newactname = pcname+"/"+pcname+"."+actname;
@@ -51,7 +49,6 @@ public class getFPSService extends Service{
             ShellUtils.execCommand("dumpsys SurfaceFlinger --latency-clear", true);
             SystemClock.sleep(1000);
             String command = "input swipe " + String.valueOf(xEnd) + " 960 " + String.valueOf(xstart) + " 960 100";
-            Log.i("benlee", command);
             ShellUtils.execCommand(command, true);
             SystemClock.sleep(1000);
             ShellUtils.execCommand("rm -f /sdcard/1fps.log", true);
@@ -60,12 +57,22 @@ public class getFPSService extends Service{
             ShellUtils.execCommandutf(commandstr,true,true);
             SystemClock.sleep(1000);
             List<String> strs = utils.readFileByLines("/sdcard/1fps.log");
-            Log.i("benlee", String.valueOf(strs.size()));
-            for(String fpsres:strs){
-                String[] res = StringUtils.split(fpsres);
-                if (res.length>1 && !res[1].equals("0")){
-                    Log.i("benlee",res[1]);
+//            for (String res:strs){
+//                Log.i("benlee",res);
+//            }
+            String refreshPeriod = strs.get(0);
+            Log.i("benlee","refreshPeriod:"+refreshPeriod);
+            Log.i("benlee","size:"+String.valueOf(strs.size()));
+            int a = 1;
+            while(true){
+                if(a==strs.size()-2){
+                    break;
                 }
+                long res = Long.valueOf(strs.get(a+1)) - Long.valueOf(strs.get(a));
+                long fps = 1000/(res/1000000);
+//                Log.i("benlee",strs.get(a+1)+"-"+strs.get(a)+"="+String.valueOf(res));
+                Log.i("benlee", String.valueOf(fps));
+                a++;
             }
         }
     }

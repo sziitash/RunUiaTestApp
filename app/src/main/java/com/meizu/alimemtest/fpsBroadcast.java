@@ -16,7 +16,7 @@ public class fpsBroadcast extends BroadcastReceiver{
             //设置intent的action
             serviceIntent.setAction("com.meizu.alimemtest.fpsservice");
             //设置intent的参数
-            serviceIntent.setPackage("com.meizu.alimemtest");
+            serviceIntent.setPackage("com.benlee.FatAutoTester");
             //通过context启动service
             context.startService(serviceIntent);
         }

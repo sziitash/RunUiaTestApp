@@ -35,22 +35,23 @@ public class MainActivity extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        make_dirs_for_dropbear();
-        extract_asset();
-        new SshdDeamonTask().start();
+//        make_dirs_for_dropbear();
+//        extract_asset();
+//        new SshdDeamonTask().start();
+//        ShellUtils.checkRootPermission();
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.mainactivity);
+        getWidget();
+        regiestListener();
+        Toast.makeText(getApplicationContext(), "sshd服务初始中", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        setContentView(R.layout.mainactivity);
-        getWidget();
-        regiestListener();
         String ipaddr = getwifiip();
         TextView ipa = (TextView) findViewById(R.id.connect);
         ipa.setText("连接地址和端口：" + ipaddr);
-        Toast.makeText(getApplicationContext(), "sshd服务初始中", Toast.LENGTH_SHORT).show();
     }
 
     public void getWidget(){
